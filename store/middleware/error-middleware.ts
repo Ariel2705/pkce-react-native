@@ -17,19 +17,13 @@ export default () => (next: any) => (action: any) => {
    * It need not run in production
    * TODO: Replace DEVELOPMENT constant with proper env check
    */
-  if (true) {
+  if (false) {
     const { error } = action;
     if (error) {
       console.error(`${action.type} caught at middleware with reason: ${JSON.stringify(error.message)}.`);
       if (error.response && error.response.data) {
         const message = getErrorMessage(error.response.data);
         console.error(`Actual cause: ${message}`);
-      }
-      if (isRejectedWithValue(action)) {
-        console.error('❌ Error global:', {
-          action: action.type,
-          message: action.payload,
-        });
       }
     }
   }

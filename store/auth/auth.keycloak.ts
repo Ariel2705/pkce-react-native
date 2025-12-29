@@ -4,7 +4,7 @@ import * as WebBrowser from 'expo-web-browser';
 WebBrowser.maybeCompleteAuthSession();
 
 export const keycloakConfig = {
-  uri: 'https://des-iam.puntonet..ec/',
+  uri: 'https://des-iam.puntonet.ec/',
   realm: 'celerity-mobile',
   clientId: 'web_app',
   scopes: ['openid', 'profile', 'email', 'offline_access'],

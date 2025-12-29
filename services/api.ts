@@ -2,9 +2,10 @@ import axios from 'axios';
 import { store } from '../store/store';
 import { refreshTokenThunk } from '../store/auth/auth.thunks';
 import { logout } from '../store/auth/auth.slice';
+import { showErrorToast } from '@/store/middleware/notification-middleware';
 
 const api = axios.create({
-  baseURL: 'https://api.example.com',
+  baseURL: 'https://6952eae8a319a928023a4795.mockapi.io/',
 });
 
 let isRefreshing = false;
@@ -60,7 +61,10 @@ api.interceptors.response.use(
     }
 
     if (error.response?.status >= 500) {
-      console.error('🔥 Error servidor', error.response.data);
+      showErrorToast('🔥 Error servidor: ' + error.response.data);
+    }
+    if (error.response?.status >= 404) {
+      showErrorToast('Recurso no encontrado');
     }
 
     return Promise.reject(error);
