@@ -1,22 +1,34 @@
 import React, { useEffect } from 'react';
-import { Provider } from 'react-redux';
-import { store } from '../store/store';
-import Login from './login/Login';
+import { PaperProvider } from 'react-native-paper';
+import { Provider, useDispatch } from 'react-redux';
+import { AppDispatch, store } from '../store/store';
 import { bootstrapAuth } from '../store/auth/auth.bootstrap';
 import Toast from 'react-native-toast-message';
+import ThemeProvider, { useThemeContext } from './context/ThemeContext';
+import AppNavigator from './navigation/AppNavigator';
 
-export const App = () => {
-    useEffect(() => {
-        store.dispatch(bootstrapAuth());
-    }, []);
+function AppContent() {
+  const { theme } = useThemeContext();
+  const dispatch = useDispatch<AppDispatch>();
 
-    return (
-        <Provider store={store} children={
-            <>
-                <Login />
-                <Toast />
-            </>} />
-    );
-};
+  useEffect(() => {
+    dispatch(bootstrapAuth());
+  }, [dispatch]);
 
-export default App;
+  return (
+    <PaperProvider theme={theme}>
+      <AppNavigator />
+      <Toast />
+    </PaperProvider>
+  );
+}
+
+export default function App() {
+  return (
+    <Provider store={store}>
+      <ThemeProvider>
+        <AppContent />
+      </ThemeProvider>
+    </Provider>
+  );
+}

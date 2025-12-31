@@ -21,14 +21,10 @@ export default function Login() {
 
   return (
     <View>
-      {!isAuthenticated ? (
         <Button
           title="Login con Keycloak"
           onPress={() => dispatch(loginWithKeycloak())}
-        />
-      ) : (
-        <Button title="Logueado ✅" onPress={() => onPress()} />
-      )}
+          />
     </View>
   );
 }

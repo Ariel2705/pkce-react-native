@@ -1,9 +1,12 @@
 import React from 'react';
-import { Text } from 'react-native';
+import { View } from 'react-native';
+import { Text } from 'react-native-paper';
 
 export const Home = () => {
     return (
-        <Text>Welcome, you are in Home Screen!</Text>
+        <View>
+            <Text>Welcome, you are in Home Screen!</Text>
+        </View>
     );
 };
 
