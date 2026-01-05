@@ -1,13 +1,13 @@
 import React from 'react';
 import {
-    ImageBackground,
-    StyleSheet,
-    View,
+  ImageBackground,
+  StyleSheet,
+  View,
 } from 'react-native';
 
 interface Props {
   source: any;
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 export const ImageAdaptiveBackground = ({
@@ -20,9 +20,6 @@ export const ImageAdaptiveBackground = ({
       style={styles.background}
       resizeMode="cover"
     >
-      {/* Overlay simple (MUY barato en GPU) */}
-      <View style={styles.overlay} />
-
       <View style={styles.content}>
         {children}
       </View>
@@ -36,9 +33,11 @@ const styles = StyleSheet.create({
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0,0,0,0.45)',
+    backgroundColor: 'rgba(0, 0, 0, 0.03)',
   },
   content: {
     flex: 1,
+    justifyContent: 'flex-end',
+    padding: 24,
   },
 });

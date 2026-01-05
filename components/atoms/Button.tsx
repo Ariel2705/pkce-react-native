@@ -1,43 +1,35 @@
+import { useThemeContext } from '@/app/context/ThemeContext';
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { Button } from 'react-native-paper';
+import { ButtonProps, Button as PaperButton } from 'react-native-paper';
 
-interface Props {
-  label: string;
-  mode?: 'contained' | 'outlined' | 'text' | 'elevated' | 'contained-tonal';
-  onPress?: () => void;
-}
+export const Button: React.FC<ButtonProps> = ({style, ...props}) => {
+    const { theme } = useThemeContext();
 
-export const AppButton = ({
-  label,
-  mode = 'contained',
-  onPress,
-}: Props) => {
-  return (
-    <Button
-      mode={mode}
-      onPress={onPress}
-      style={[
-        styles.button,
-        mode === 'outlined' && styles.outlined,
-      ]}
-      labelStyle={styles.label}
-      textColor={mode === 'text' ? '#FFFFFF' : undefined}
-    >
-      {label}
-    </Button>
-  );
+    const styles = StyleSheet.create({
+        button: {
+            borderRadius: 30,
+            marginBottom: 12,
+            height: 55,
+            justifyContent: 'center',
+            backgroundColor: theme.colors.primary
+        },
+        label: {
+            color: '#FFFFFF',
+            fontFamily: 'Bariol',
+            fontWeight: '700',
+            fontSize: 16,
+        },
+    });
+
+    return (
+        <PaperButton
+            textColor={theme.colors.secondaryText}
+            buttonColor={theme.colors.primary}
+            style={[styles.button, style]}
+            {...props}
+        />
+    )
 };
 
-const styles = StyleSheet.create({
-  button: {
-    borderRadius: 30,
-    marginBottom: 12,
-  },
-  outlined: {
-    borderColor: '#FFFFFF',
-  },
-  label: {
-    fontWeight: '700',
-  },
-});
+export default Button;

@@ -5,16 +5,18 @@ import { Dot } from '../atoms/Dot';
 interface Props {
   length: number;
   activeIndex: number;
+  onPress: (index: number) => void;
 }
 
 export const PageIndicator = ({
   length,
   activeIndex,
+  onPress
 }: Props) => {
   return (
     <View style={styles.container}>
       {Array.from({ length }).map((_, i) => (
-        <Dot key={i} active={i === activeIndex} />
+        <Dot key={i} active={i === activeIndex} onPress={() => onPress(i)} />
       ))}
     </View>
   );
@@ -23,7 +25,7 @@ export const PageIndicator = ({
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    justifyContent: 'center',
-    marginBottom: 20,
+    justifyContent: 'flex-start',
+    marginVertical: 20,
   },
 });

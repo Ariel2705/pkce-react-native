@@ -1,11 +1,11 @@
-import axios from 'axios';
-import { store } from '../store/store';
-import { refreshTokenThunk } from '../store/auth/auth.thunks';
-import { logout } from '../store/auth/auth.slice';
 import { showErrorToast } from '@/store/middleware/notification-middleware';
+import axios from 'axios';
+import { logout } from '../store/auth/auth.slice';
+import { refreshTokenThunk } from '../store/auth/auth.thunks';
+import { store } from '../store/store';
 
 const api = axios.create({
-  baseURL: 'https://6952eae8a319a928023a4795.mockapi.io/',
+  baseURL: 'http://des-apis.puntonet.ec',
 });
 
 let isRefreshing = false;
@@ -61,7 +61,7 @@ api.interceptors.response.use(
     }
 
     if (error.response?.status >= 500) {
-      showErrorToast('🔥 Error servidor: ' + error.response.data);
+      showErrorToast('Error servidor: ' + error.response.data);
     }
     if (error.response?.status >= 404) {
       showErrorToast('Recurso no encontrado');
@@ -72,3 +72,4 @@ api.interceptors.response.use(
 );
 
 export { api };
+

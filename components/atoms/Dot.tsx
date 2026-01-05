@@ -1,12 +1,25 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, ViewStyle } from 'react-native';
 
 interface Props {
   active: boolean;
+  onPress?: () => void;
+  style?: ViewStyle;
 }
 
-export const Dot = ({ active }: Props) => {
-  return <View style={[styles.dot, active && styles.active]} />;
+export const Dot: React.FC<Props> = ({ active, onPress, style }) => {
+  return (
+    <Pressable
+      onPress={onPress}
+      hitSlop={8}
+      style={({ pressed }) => [
+        styles.dot,
+        active && styles.active,
+        pressed && styles.pressed,
+        style,
+      ]}
+    />
+  );
 };
 
 const styles = StyleSheet.create({
@@ -20,5 +33,8 @@ const styles = StyleSheet.create({
   active: {
     width: 16,
     backgroundColor: '#FFFFFF',
+  },
+  pressed: {
+    opacity: 0.7,
   },
 });
