@@ -2,8 +2,8 @@ import { useAppSelector } from '@/store/hooks';
 import { NavigationContainer, NavigationIndependentTree } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
-import Login from '../login/Login';
-import Home from '../home/Home';
+import Home from '../screens/home/Home';
+import Login from '../screens/login/LoginScreen';
 
 const AuthStack = createNativeStackNavigator();
 const AppStack = createNativeStackNavigator();

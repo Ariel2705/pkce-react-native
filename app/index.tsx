@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import { PaperProvider } from 'react-native-paper';
-import { Provider, useDispatch } from 'react-redux';
-import { AppDispatch, store } from '../store/store';
-import { bootstrapAuth } from '../store/auth/auth.bootstrap';
 import Toast from 'react-native-toast-message';
+import { Provider, useDispatch } from 'react-redux';
+import { bootstrapAuth } from '../store/auth/auth.bootstrap';
+import { AppDispatch, store } from '../store/store';
 import ThemeProvider, { useThemeContext } from './context/ThemeContext';
 import AppNavigator from './navigation/AppNavigator';
 
