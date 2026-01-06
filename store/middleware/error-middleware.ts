@@ -1,4 +1,3 @@
-import { isRejectedWithValue } from "@reduxjs/toolkit";
 
 const getErrorMessage = (errorData: any) => {
   let { message } = errorData;
@@ -11,22 +10,6 @@ const getErrorMessage = (errorData: any) => {
 };
 
 export default () => (next: any) => (action: any) => {
-  /**
-   *
-   * The error middleware serves to log error messages from dispatch
-   * It need not run in production
-   * TODO: Replace DEVELOPMENT constant with proper env check
-   */
-  if (false) {
-    const { error } = action;
-    if (error) {
-      console.error(`${action.type} caught at middleware with reason: ${JSON.stringify(error.message)}.`);
-      if (error.response && error.response.data) {
-        const message = getErrorMessage(error.response.data);
-        console.error(`Actual cause: ${message}`);
-      }
-    }
-  }
   // Dispatch initial action
   return next(action);
 };

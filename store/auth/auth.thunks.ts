@@ -1,18 +1,35 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import * as WebBrowser from 'expo-web-browser';
 import * as AuthSession from 'expo-auth-session';
+import * as WebBrowser from 'expo-web-browser';
 import {
   fetchDiscovery,
-  redirectUri,
   keycloakConfig,
+  redirectUri,
 } from './auth.keycloak';
 import { saveTokens } from './auth.storage';
+
+export function withTimeout<T>(
+  promise: Promise<T>,
+  timeoutMs: number,
+  timeoutMessage = 'Tiempo de espera agotado'
+): Promise<T> {
+  return Promise.race([
+    promise,
+    new Promise<T>((_, reject) =>
+      setTimeout(() => reject(new Error(timeoutMessage)), timeoutMs)
+    ),
+  ]);
+}
 
 export const loginWithKeycloak = createAsyncThunk(
   'auth/loginWithKeycloak',
   async (_, { rejectWithValue }) => {
     try {
-      const discovery = await fetchDiscovery();
+      const discovery = await withTimeout(
+        fetchDiscovery(),
+        5000,
+        'No se pudo contactar con el servidor de autenticación'
+      );
 
       const authRequest = new AuthSession.AuthRequest({
         clientId: keycloakConfig.clientId,
@@ -50,7 +67,7 @@ export const loginWithKeycloak = createAsyncThunk(
       await saveTokens(tokens.accessToken, tokens.refreshToken);
       return tokens;
     } catch (e: any) {
-      return rejectWithValue('Error autenticando con Keycloak');
+      return rejectWithValue(e.message);
     }
   }
 );

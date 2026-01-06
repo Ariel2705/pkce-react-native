@@ -36,7 +36,7 @@ export default function AppNavigator() {
     return (
         <NavigationIndependentTree>
             <NavigationContainer>
-                {!isAuthenticated ? <AppStackScreen /> : <AuthStackScreen />}
+                {isAuthenticated ? <AppStackScreen /> : <AuthStackScreen />}
             </NavigationContainer>
         </NavigationIndependentTree>
     );

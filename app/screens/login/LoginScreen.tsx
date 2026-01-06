@@ -1,14 +1,11 @@
-import { ImageAdaptiveBackground } from '@/components/atoms/ImageAdaptiveBackground';
 import { PageIndicator } from '@/components/molecules/PageIndicator';
 import { LoginBody } from '@/components/organisms/LoginBody';
+import { LoginCarousel } from '@/components/organisms/LoginCarousel';
 import { LoginFooter } from '@/components/organisms/LoginFooter';
-import { api } from '@/services/api';
+import { loginWithKeycloak } from '@/store/auth/auth.thunks';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { showSuccessToast } from '@/store/middleware/notification-middleware';
 import { useRef, useState } from 'react';
 import { Animated, StyleSheet, View } from 'react-native';
-import PagerView from 'react-native-pager-view';
-import { ActivityIndicator } from 'react-native-paper';
 
 export const slides = [
   {
@@ -39,71 +36,43 @@ export const slides = [
 
 export default function Login() {
   const dispatch = useAppDispatch();
-  const { loading, isAuthenticated } = useAppSelector(s => s.auth);
-  const pagerRef = useRef<PagerView>(null);
-
-  const onPress = () => {
-    api.get('/pruebaa/a').then(response => {
-      console.log('Respuesta de /prueba:', response.data);
-      showSuccessToast(response.data.message);
-    }).catch(error => {
-      //showErrorToast('Error fetching user profile:' + error);
-    });
-  }
-
+  const { loading } = useAppSelector(s => s.auth);
   const [index, setIndex] = useState(0);
-  const scrollOffset = useRef(new Animated.Value(0)).current;
-  const appearAnim = useRef(new Animated.Value(1)).current;
+  const swipeProgress = useRef(new Animated.Value(0)).current;
+  const appearProgress = useRef(new Animated.Value(1)).current;
 
-  const handleDotPress = (pageIndex: number) => {
-    setIndex(pageIndex);
-    pagerRef.current?.setPage(pageIndex);
-  };
-
-  const handlePageSelected = (e: any) => {
-    setIndex(e.nativeEvent.position);
-  };
-
-  const handlePageScroll = (e: any) => {
-    scrollOffset.setValue(e.nativeEvent.offset);
-    appearAnim.setValue(0);
-    Animated.timing(appearAnim, {
-      toValue: 1,
-      duration: 200,
-      useNativeDriver: true,
-    }).start();
-  };
-
-  if (loading) return <ActivityIndicator />;
 
   return (
     <View style={styles.container}>
-      <PagerView
-        ref={pagerRef}
-        style={StyleSheet.absoluteFill}
-        initialPage={0}
-        overdrag
-        onPageSelected={handlePageSelected}
-        onPageScroll={handlePageScroll}>
-        {slides.map((slide) => (
-          <View key={slide.id}>
-            <ImageAdaptiveBackground source={slide.image} />
-          </View>
-        ))}
-      </PagerView>
+      <LoginCarousel
+        slides={slides}
+        onIndexChange={setIndex}
+        swipeProgress={swipeProgress}
+        appearProgress={appearProgress}
+      />
+
       <View style={styles.footerContainer}>
         <LoginBody
           title={slides[index].title}
           subtitle={slides[index].subtitle}
-          scrollOffset={scrollOffset}
-          appearAnim={appearAnim}
+          animation={{
+            swipeProgress,
+            appearProgress,
+          }}
         />
+
         <PageIndicator
           length={slides.length}
           activeIndex={index}
-          onPress={handleDotPress}
+          onPress={setIndex}
         />
-        <LoginFooter />
+
+        <LoginFooter
+          loading={loading}
+          onLogin={() => dispatch(loginWithKeycloak())}
+          onRegister={() => console.log('register')}
+          onContinueAsGuest={() => console.log('guest')}
+        />
       </View>
     </View>
   );
