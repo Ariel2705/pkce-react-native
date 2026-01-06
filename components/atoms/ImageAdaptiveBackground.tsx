@@ -13,7 +13,7 @@ interface Props {
 export const ImageAdaptiveBackground = ({
   source,
   children,
-}: Props) => {
+}: Props) => {  
   return (
     <ImageBackground
       source={source}

@@ -1,12 +1,11 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import * as AuthSession from 'expo-auth-session';
-import * as WebBrowser from 'expo-web-browser';
 import {
   fetchDiscovery,
   keycloakConfig,
   redirectUri,
 } from './auth.keycloak';
-import { saveTokens } from './auth.storage';
+import { clearTokens, saveTokens } from './auth.storage';
 
 export function withTimeout<T>(
   promise: Promise<T>,
@@ -39,6 +38,9 @@ export const loginWithKeycloak = createAsyncThunk(
         usePKCE: true,
         prompt: AuthSession.Prompt.Login,
       });
+
+      console.log(authRequest);
+      
 
       const authResult = await authRequest.promptAsync(discovery);
 
@@ -105,6 +107,8 @@ export const logoutThunk = createAsyncThunk(
   async (idToken: string) => {
     const discovery = await fetchDiscovery();
     const redirectUri = AuthSession.makeRedirectUri();
+    
+    await clearTokens();
 
     const logoutUrl =
       `${discovery.endSessionEndpoint}` +
@@ -112,6 +116,6 @@ export const logoutThunk = createAsyncThunk(
       `&post_logout_redirect_uri=${redirectUri}` +
       `&id_token_hint=${idToken}`;
 
-    await WebBrowser.openAuthSessionAsync(logoutUrl, redirectUri);
+    // await WebBrowser.openAuthSessionAsync(logoutUrl, redirectUri);
   }
 );

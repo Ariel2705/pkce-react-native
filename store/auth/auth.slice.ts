@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { clearTokens } from './auth.storage';
 import { loginWithKeycloak, logoutThunk, refreshTokenThunk } from './auth.thunks';
 import { AuthState } from './auth.types';
-import { clearTokens } from './auth.storage';
 
 const initialState: AuthState = {
   loading: false,

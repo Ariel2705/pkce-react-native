@@ -18,6 +18,8 @@ export async function saveTokens(
 export async function loadTokens() {
   const accessToken = await SecureStore.getItemAsync(ACCESS_TOKEN_KEY);
   const refreshToken = await SecureStore.getItemAsync(REFRESH_TOKEN_KEY);
+  console.log(accessToken, refreshToken );
+  
 
   if (!accessToken || !refreshToken) return null;
 
@@ -27,4 +29,7 @@ export async function loadTokens() {
 export async function clearTokens() {
   await SecureStore.deleteItemAsync(ACCESS_TOKEN_KEY);
   await SecureStore.deleteItemAsync(REFRESH_TOKEN_KEY);
+  const accessToken = await SecureStore.getItemAsync(ACCESS_TOKEN_KEY);
+  const refreshToken = await SecureStore.getItemAsync(REFRESH_TOKEN_KEY);
+  console.log(accessToken, refreshToken );
 }

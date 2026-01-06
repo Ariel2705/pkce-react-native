@@ -7,7 +7,7 @@ interface Slide {
   id: string;
   title: string;
   subtitle: string;
-  image: { uri: string };
+  image: string;
 }
 
 interface Props {
