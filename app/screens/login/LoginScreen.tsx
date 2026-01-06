@@ -1,13 +1,14 @@
 import { ImageAdaptiveBackground } from '@/components/atoms/ImageAdaptiveBackground';
-import { Label } from '@/components/atoms/Label';
 import { PageIndicator } from '@/components/molecules/PageIndicator';
+import { LoginBody } from '@/components/organisms/LoginBody';
 import { LoginFooter } from '@/components/organisms/LoginFooter';
 import { api } from '@/services/api';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { showSuccessToast } from '@/store/middleware/notification-middleware';
 import { useRef, useState } from 'react';
-import { ActivityIndicator, Animated, StyleSheet, View } from 'react-native';
+import { Animated, StyleSheet, View } from 'react-native';
 import PagerView from 'react-native-pager-view';
+import { ActivityIndicator } from 'react-native-paper';
 
 export const slides = [
   {
@@ -50,9 +51,9 @@ export default function Login() {
     });
   }
 
-  if (loading) return <ActivityIndicator />;
-
   const [index, setIndex] = useState(0);
+  const scrollOffset = useRef(new Animated.Value(0)).current;
+  const appearAnim = useRef(new Animated.Value(1)).current;
 
   const handleDotPress = (pageIndex: number) => {
     setIndex(pageIndex);
@@ -73,27 +74,7 @@ export default function Login() {
     }).start();
   };
 
-
-  const scrollOffset = useRef(new Animated.Value(0)).current;
-  const appearAnim = useRef(new Animated.Value(1)).current;
-
-  const swipeOpacity = scrollOffset.interpolate({
-    inputRange: [0, 0.6, 1],
-    outputRange: [1, 0, 0],
-  });
-
-  const opacity = Animated.multiply(swipeOpacity, appearAnim);
-
-  const translateY = Animated.add(
-    scrollOffset.interpolate({
-      inputRange: [0, 1],
-      outputRange: [0, 30],
-    }),
-    appearAnim.interpolate({
-      inputRange: [0, 1],
-      outputRange: [20, 0],
-    })
-  );
+  if (loading) return <ActivityIndicator />;
 
   return (
     <View style={styles.container}>
@@ -111,21 +92,12 @@ export default function Login() {
         ))}
       </PagerView>
       <View style={styles.footerContainer}>
-        <Animated.View
-          pointerEvents="none"
-          style={{
-            opacity,
-            transform: [{ translateY }],
-          }}
-        >
-          <Label style={styles.title}>
-            {slides[index].title}
-          </Label>
-          <Label style={styles.subtitle}>
-            {slides[index].subtitle}
-          </Label>
-        </Animated.View>
-
+        <LoginBody
+          title={slides[index].title}
+          subtitle={slides[index].subtitle}
+          scrollOffset={scrollOffset}
+          appearAnim={appearAnim}
+        />
         <PageIndicator
           length={slides.length}
           activeIndex={index}
@@ -146,22 +118,5 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     padding: 24,
     width: '100%',
-  },
-  subtitleContainer: {
-    bottom: 20,
-    width: '100%',
-  },
-  title: {
-    color: 'white',
-    fontWeight: 700,
-    fontSize: 16,
-    textAlign: 'left',
-    paddingBottom: 15
-  },
-
-  subtitle: {
-    color: 'white',
-    fontSize: 42,
-    textAlign: 'left',
   },
 });
