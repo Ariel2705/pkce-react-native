@@ -1,3 +1,4 @@
+import { useThemeContext } from '@/app/context/ThemeContext';
 import React from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { Button } from '../atoms/Button';
@@ -16,6 +17,33 @@ export const LoginFooter = ({
   onRegister,
   onContinueAsGuest,
 }: Props) => {
+  const { theme } = useThemeContext();
+
+  const styles = StyleSheet.create({
+    container: {
+      borderTopLeftRadius: 24,
+      borderTopRightRadius: 24,
+    },
+    row: {
+      flexDirection: 'row',
+      gap: 10,
+      justifyContent: 'space-between',
+    },
+    secondaryButton: {
+      width: '50%',
+      backgroundColor: theme.colors.background,
+    },
+    secondaryLabel: {
+      color: theme.colors.darkBlue,
+    },
+    primaryButton: {
+      backgroundColor: theme.colors.darkBlue,
+    },
+    primaryLabel: {
+      color: theme.colors.background,
+    },
+  });
+
   if (loading) {
     return <ActivityIndicator />;
   }
@@ -38,28 +66,3 @@ export const LoginFooter = ({
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    borderTopLeftRadius: 24,
-    borderTopRightRadius: 24,
-  },
-  row: {
-    flexDirection: 'row',
-    gap: 10,
-    justifyContent: 'space-between',
-  },
-  secondaryButton: {
-    width: '50%',
-    backgroundColor: '#FFFFFF',
-  },
-  secondaryLabel: {
-    color: '#0A1253',
-  },
-  primaryButton: {
-    backgroundColor: '#0A1253',
-  },
-  primaryLabel: {
-    color: '#FFFFFF',
-  },
-});

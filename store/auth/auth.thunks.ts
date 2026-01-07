@@ -39,9 +39,6 @@ export const loginWithKeycloak = createAsyncThunk(
         prompt: AuthSession.Prompt.Login,
       });
 
-      console.log(authRequest);
-      
-
       const authResult = await authRequest.promptAsync(discovery);
 
       if (authResult.type !== 'success') {

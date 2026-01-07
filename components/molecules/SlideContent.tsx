@@ -1,6 +1,8 @@
+import { useThemeContext } from '@/app/context/ThemeContext';
+import { colorWithAlpha } from '@/app/utils/color';
 import React from 'react';
 import { Dimensions, Image, StyleSheet, View } from 'react-native';
-import { Text } from 'react-native-paper';
+import { Label } from '../atoms/Label';
 
 const { height } = Dimensions.get('window');
 
@@ -15,35 +17,36 @@ export const SlideContent = ({
   title,
   subtitle,
 }: Props) => {
+  const { theme } = useThemeContext();
+
+  const styles = StyleSheet.create({
+    container: {
+      alignItems: 'center',
+    },
+    image: {
+      width: '100%',
+      height: height * 0.45,
+      resizeMode: 'contain',
+    },
+    subtitle: {
+      color: colorWithAlpha(theme.colors.secondaryText, 0.6),
+      fontSize: 14,
+      marginTop: 8,
+    },
+    title: {
+      color: theme.colors.secondaryText,
+      fontSize: 32,
+      fontWeight: '700',
+      textAlign: 'center',
+      paddingHorizontal: 24,
+    },
+  });
+
   return (
     <View style={styles.container}>
       <Image source={image} style={styles.image} />
-
-      <Text style={styles.subtitle}>{subtitle}</Text>
-      <Text style={styles.title}>{title}</Text>
+      <Label style={styles.subtitle}>{subtitle}</Label>
+      <Label style={styles.title}>{title}</Label>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-  },
-  image: {
-    width: '100%',
-    height: height * 0.45,
-    resizeMode: 'contain',
-  },
-  subtitle: {
-    color: '#E0E0E0',
-    fontSize: 14,
-    marginTop: 8,
-  },
-  title: {
-    color: '#FFFFFF',
-    fontSize: 32,
-    fontWeight: '700',
-    textAlign: 'center',
-    paddingHorizontal: 24,
-  },
-});

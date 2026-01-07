@@ -1,3 +1,4 @@
+import { useThemeContext } from '@/app/context/ThemeContext';
 import React, { useMemo } from 'react';
 import { Animated, StyleSheet } from 'react-native';
 import { Label } from '../atoms/Label';
@@ -12,6 +13,7 @@ interface Props {
 }
 
 export const LoginBody = ({ title, subtitle, animation }: Props) => {
+  const { theme } = useThemeContext();
   const { swipeProgress, appearProgress } = animation;
 
   const animatedStyles = useMemo(() => {
@@ -39,6 +41,19 @@ export const LoginBody = ({ title, subtitle, animation }: Props) => {
     };
   }, [swipeProgress, appearProgress]);
 
+  const styles = StyleSheet.create({
+    title: {
+      color: theme.colors.secondaryText,
+      fontWeight: '700',
+      fontSize: 16,
+      paddingBottom: 15,
+    },
+    subtitle: {
+      color: theme.colors.secondaryText,
+      fontSize: 42,
+    },
+  });
+
   return (
     <Animated.View pointerEvents="none" style={animatedStyles}>
       <Label style={styles.title}>{title}</Label>
@@ -46,16 +61,3 @@ export const LoginBody = ({ title, subtitle, animation }: Props) => {
     </Animated.View>
   );
 };
-
-const styles = StyleSheet.create({
-  title: {
-    color: 'white',
-    fontWeight: '700',
-    fontSize: 16,
-    paddingBottom: 15,
-  },
-  subtitle: {
-    color: 'white',
-    fontSize: 42,
-  },
-});
