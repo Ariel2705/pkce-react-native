@@ -15,7 +15,7 @@ export const Button: React.FC<ButtonProps> = ({style, ...props}) => {
             backgroundColor: theme.colors.primary
         },
         label: {
-            color: '#FFFFFF',
+            color: theme.colors.secondaryText,
             fontFamily: 'Bariol',
             fontWeight: '700',
             fontSize: 16,
@@ -26,6 +26,7 @@ export const Button: React.FC<ButtonProps> = ({style, ...props}) => {
         <PaperButton
             textColor={theme.colors.secondaryText}
             buttonColor={theme.colors.primary}
+            labelStyle={styles.label}
             style={[styles.button, style]}
             {...props}
         />
