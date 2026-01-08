@@ -35,7 +35,6 @@ export default function Login() {
   const swipeProgress = useRef(new Animated.Value(0)).current;
   const appearProgress = useRef(new Animated.Value(1)).current;
 
-
   return (
     <View style={styles.container}>
       <LoginCarousel

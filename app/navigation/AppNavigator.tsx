@@ -2,7 +2,7 @@ import { useAppSelector } from '@/store/hooks';
 import { NavigationContainer, NavigationIndependentTree } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
-import Home from '../screens/home/Home';
+import HomeScreen from '../screens/home/HomeScreen';
 import Login from '../screens/login/LoginScreen';
 
 const AuthStack = createNativeStackNavigator();
@@ -23,7 +23,7 @@ function AppStackScreen() {
                 name="Home"
                 options={{ headerShown: false }}
             >
-                {props => <Home />}
+                {props => <HomeScreen />}
             </AppStack.Screen>
             {/* Agrega aquí otras screens si es necesario */}
         </AppStack.Navigator>

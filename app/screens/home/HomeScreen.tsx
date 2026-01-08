@@ -7,8 +7,8 @@ import React from 'react';
 import { Text } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-export const Home = () => {
-  const dispatch = useAppDispatch();
+export const HomeScreen = () => {
+    const dispatch = useAppDispatch();
     const idToken = store.getState().auth.idToken;
 
     return (
@@ -21,4 +21,4 @@ export const Home = () => {
     );
 };
 
-export default Home;
+export default HomeScreen;
